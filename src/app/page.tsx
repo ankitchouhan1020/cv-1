@@ -8,10 +8,11 @@ import { GlobeIcon, MailIcon, PhoneIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
+import { instanceOf } from "prop-types";
 
 export const metadata: Metadata = {
   title: `${RESUME_DATA.name} | ${RESUME_DATA.about}`,
-  description: RESUME_DATA.summary,
+  description: RESUME_DATA.summary
 };
 
 export default function Page() {
@@ -132,7 +133,20 @@ export default function Page() {
                   </h4>
                 </CardHeader>
                 <CardContent className="mt-2 text-xs">
-                  {work.description}
+                  <div className="ml-2">
+                    {typeof work.description === "string" ? work.description : (
+                      <ul className="list-disc list-inside">
+                        {work.description.map((description) => (
+                          <li key={description.highlight} className="mt-1 text-justify">
+                          <span className="font-semibold">
+                            {description.highlight}
+                          </span>{": "}
+                            {description.caption}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             );
@@ -189,12 +203,12 @@ export default function Page() {
         links={[
           {
             url: RESUME_DATA.personalWebsiteUrl,
-            title: "Personal Website",
+            title: "Personal Website"
           },
           ...RESUME_DATA.contact.social.map((socialMediaLink) => ({
             url: socialMediaLink.url,
-            title: socialMediaLink.name,
-          })),
+            title: socialMediaLink.name
+          }))
         ]}
       />
     </main>
